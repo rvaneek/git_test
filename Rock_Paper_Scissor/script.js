@@ -19,7 +19,7 @@ function Computer() {
 function Play(Com, Pla) {
 	if (Com === Pla)
 		alert("It is a Tie.")
-	else if (Com === "stone" && Pla === "paper") {
+	else if (Com === "rock" && Pla === "paper") {
 		alert("Paper beats Stone! you Won")
 		plawin++
 	} else if (Com === "paper" && Pla === "scissor") {
@@ -34,7 +34,7 @@ function Play(Com, Pla) {
 	}
 }
 
-while (comwin < 5 || plawin < 5) {
+while (comwin < 5 && plawin < 5) {
 	Play(Computer(), Player())
 }
 if (comwin === 5)
