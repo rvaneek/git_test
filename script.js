@@ -12,4 +12,5 @@ function frizzbuzz(num) {
 	}
 }
 
-frizzbuzz(20)
+let n = parseInt(prompt("Please enter a number you'd like to fizzbuzz upto : "));
+frizzbuzz(n)
