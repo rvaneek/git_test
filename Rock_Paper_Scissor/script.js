@@ -1,43 +1,120 @@
 const options = ["rock", "paper", "scissor"]
-let comwin = 0
-let plawin = 0
+let AIscore = 0, Plascore = 0;
 
-function Player() {
+let AIScoreCard = document.querySelector(".Score_Board > .AI > .Score");
+let PlascoreCard = document.querySelector(".Score_Board > .Player > .Score");
+
+let flag = false
+
+function Announce(result1, result2) {
+	let ai = null;
+	let pla = null;
 	
-	while (true) {
-		let ch = prompt("Rock Paper Scissor : ")
-		ch = ch.toLowerCase()
-		if (options.includes(ch))
-			return ch
+	if (result1 === options[0])
+		ai = document.querySelector(".AI .rock");
+	else if (result1 === options[1])
+		ai = document.querySelector(".AI .paper");
+	else
+		ai = document.querySelector(".AI .scissor");
+	
+	if (result2 === options[0])
+		pla = document.querySelector(".Player .rock");
+	else if (result2 === options[1])
+		pla = document.querySelector(".Player .paper");
+	else
+		pla = document.querySelector(".Player .scissor");
+	
+	
+	console.log(result1, result2);
+	
+	let id = null;
+	let pos = 100;
+	clearInterval(id);
+	id = setInterval(move, 1);
+	
+	function move() {
+		if (pos === 10) {
+			clearInterval(id);
+		} else {
+			pos--;
+			ai.style.top = pos + "vh";
+			pla.style.top = pos + "vh";
+		}
+	}
+	
+	setTimeout(() => {
+		id = setInterval(move_back, 1)
+		
+	}, 2100)
+	
+	function move_back() {
+		if (pos === 100) {
+			clearInterval(id);
+		} else {
+			pos++;
+			ai.style.top = pos + "vh";
+			pla.style.top = pos + "vh";
+		}
 	}
 }
 
-function Computer() {
+function Show(result) {
+	if (result === 1)
+		PlascoreCard.textContent = (++Plascore).toString()
+	else if (result === -1)
+		AIScoreCard.textContent = (++AIscore).toString()
+	// else
+	// alert("Tie")
+	
+	setTimeout(() => {
+		flag = false
+	}, 2000)
+}
+
+function AIchoice() {
 	return options[Math.floor(Math.random() * 3)]
 }
 
-function Play(Com, Pla) {
-	if (Com === Pla)
-		alert("It is a Tie.")
-	else if (Com === "rock" && Pla === "paper") {
-		alert("Paper beats Stone! you Won")
-		plawin++
-	} else if (Com === "paper" && Pla === "scissor") {
-		alert("Scissor beats Paper! you Won")
-		plawin++
-	} else if (Com === "scissor" && Pla === "rock") {
-		alert("Rock beats Scissor! you Won")
-		plawin++
-	} else {
-		alert("Oops!! you Lost 😭")
-		comwin++
-	}
+function PlayTurn(Aichoice, playerchoice) {
+	
+	Announce(Aichoice, playerchoice);
+	
+	setTimeout(() => {
+		if (Aichoice === playerchoice)
+			Show(0);
+		else if (Aichoice === options[0] && playerchoice === options[1])
+			Show(1);
+		else if (Aichoice === options[1] && playerchoice === options[2])
+			Show(1);
+		else if (Aichoice === options[2] && playerchoice === options[0])
+			Show(1);
+		else
+			Show(-1);
+	}, 1000);
 }
 
-while (comwin < 5 && plawin < 5) {
-	Play(Computer(), Player())
-}
-if (comwin === 5)
-	alert("AI Won 5 matches. You Lost")
-else
-	alert("Congratulations you won 5 matches")
+const rock = document.querySelector('.rock');
+const paper = document.querySelector('.paper');
+const scissor = document.querySelector('.scissor');
+
+rock.addEventListener('click', () => {
+	let choice = AIchoice()
+	if (!flag) {
+		flag = true
+		PlayTurn(choice, options[0]);
+	}
+});
+paper.addEventListener('click', () => {
+	let choice = AIchoice()
+	if (!flag) {
+		flag = true
+		PlayTurn(choice, options[1]);
+	}
+});
+scissor.addEventListener('click', () => {
+	let choice = AIchoice()
+	if (!flag) {
+	flag = true
+		PlayTurn(choice, options[2]);
+	}
+})
